@@ -1,6 +1,7 @@
 # phpstorm project files
 .idea
 vendor
+
 # netbeans project files
 nbproject
 
@@ -8,6 +9,7 @@ nbproject
 .buildpath
 .project
 .settings
+.vscode
 
 # windows thumbnail cache
 Thumbs.db
