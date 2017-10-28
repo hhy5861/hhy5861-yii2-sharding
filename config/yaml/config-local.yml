@@ -1,0 +1,71 @@
+CACHE_PATH : /data/logs/git/cache/
+
+URL_ZIPKIN : http://zipkin.local.koudailc.com
+
+URL_HTTP_API :
+  user: http://sharding.local.koudailc.com
+
+DB_MYSQL :
+  default: &default
+    database : sys_order
+    type : mysql
+    host : 127.0.0.1
+    port : 3306
+    user : mike
+    password : tlslpc
+    charset : utf8
+    prefix: tbl_
+    timeout: 3
+
+  orders :
+    <<: *default
+
+NODES:
+  node_1: &nodes
+    database : sys_order
+    type : mysql
+    host : 127.0.0.1
+    port : 3306
+    username : mike
+    password : tlslpc
+    charset : utf8
+    prefix: tbl_
+    dbShardKey: order_id
+    tableShardKey: order_id
+    slave: &slave
+      username : mike
+      password : tlslpc
+      timeout: 3
+      dsn: &dsn
+        -
+         database : sys_order_1
+         host : 127.0.0.1
+         port : 3306
+        -
+         database : sys_order_2
+         host : 127.0.0.1
+         port : 3306
+        -
+         database : sys_order_3
+         host : 127.0.0.1
+         port : 3306
+
+  node_2:
+    <<: *nodes
+    slave:
+      <<: *slave
+      username : mike_2
+      password : tlslpc_2
+      timeout: 3
+      dsn:
+        <<: *dsn
+
+DB_REDIS :
+   host : 127.0.0.1
+   port : 6379
+   auth : ""
+
+DB_MEMCACHE :
+   default: &default
+   host : 127.0.0.1
+   port : 11211
